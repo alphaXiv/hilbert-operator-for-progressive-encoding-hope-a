@@ -1,7 +1,7 @@
 {
-  "condition": "resnet50-primary",
-  "model": "resnet50",
-  "seed": 17,
+  "condition": "resnet18-robustness",
+  "model": "resnet18",
+  "seed": 71,
   "subset_size": 10000,
   "densities": [1.0, 0.9, 0.8, 0.7, 0.6, 0.5],
   "batch_size": 160,
