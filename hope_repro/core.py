@@ -174,10 +174,18 @@ def rescale_model(
             # t re-shards the post-BN ReLU signal into the downstream weights.
             s = float(torch.exp(torch.empty(()).uniform_(-0.7, 0.7, generator=generator)))
             t = float(torch.exp(torch.empty(()).uniform_(-0.7, 0.7, generator=generator)))
-            channel.conv.weight[i].mul_(s)
-            channel.bn.running_mean[i].mul_(s)
-            old_var = channel.bn.running_var[i].clone()
-            channel.bn.running_var[i].copy_((old_var + channel.bn.eps) * s * s - channel.bn.eps)
+            # Restrict raw BN-input scaling to bn1 channels. In bottlenecks, also
+            # scaling bn2 raw filters changes the output coordinates used by bn1
+            # capacity, confounding the neuron-local symmetry under test.
+            if channel.layer.endswith(".bn1"):
+                channel.conv.weight[i].mul_(s)
+                channel.bn.running_mean[i].mul_(s)
+                old_var = channel.bn.running_var[i].clone()
+                channel.bn.running_var[i].copy_(
+                    (old_var + channel.bn.eps) * s * s - channel.bn.eps
+                )
+            else:
+                s = 1.0
             channel.bn.weight[i].mul_(t)
             channel.bn.bias[i].mul_(t)
             channel.outgoing.weight[:, i].div_(t)
