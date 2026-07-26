@@ -1,0 +1,11 @@
+{
+  "condition": "resnet50-primary",
+  "model": "resnet50",
+  "seed": 17,
+  "subset_size": 10000,
+  "densities": [1.0, 0.9, 0.8, 0.7, 0.6, 0.5],
+  "batch_size": 160,
+  "workers_per_gpu": 6,
+  "mc_samples": 100000,
+  "mc_channels": 64
+}

@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hope-repro-{{ORX_RUN}}
+spec:
+  activeDeadlineSeconds: 39600
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: run
+          image: pytorch/pytorch:2.6.0-cuda12.4-cudnn9-runtime
+          command: ["bash", "-c", "$ORX_SCRIPT"]
+          resources:
+            requests:
+              nvidia.com/gpu: "4"
+              cpu: "32"
+              memory: "128Gi"
+            limits:
+              nvidia.com/gpu: "4"
+
