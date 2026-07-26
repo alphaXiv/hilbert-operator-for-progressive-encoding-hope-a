@@ -170,14 +170,23 @@ def rescale_model(
     with torch.no_grad():
         for channel in channels:
             i = channel.index
-            # s changes raw incoming magnitudes while BN cancels it exactly.
+            # s changes non-overlapping conv1 incoming magnitudes while BN cancels
+            # it exactly. Scaling conv2 rows too would also change the output
+            # geometry of the preceding eligible bn1 neurons.
             # t re-shards the post-BN ReLU signal into the downstream weights.
-            s = float(torch.exp(torch.empty(()).uniform_(-0.7, 0.7, generator=generator)))
+            s = (
+                float(torch.exp(torch.empty(()).uniform_(-0.7, 0.7, generator=generator)))
+                if channel.layer.endswith(".bn1")
+                else 1.0
+            )
             t = float(torch.exp(torch.empty(()).uniform_(-0.7, 0.7, generator=generator)))
-            channel.conv.weight[i].mul_(s)
-            channel.bn.running_mean[i].mul_(s)
-            old_var = channel.bn.running_var[i].clone()
-            channel.bn.running_var[i].copy_((old_var + channel.bn.eps) * s * s - channel.bn.eps)
+            if s != 1.0:
+                channel.conv.weight[i].mul_(s)
+                channel.bn.running_mean[i].mul_(s)
+                old_var = channel.bn.running_var[i].clone()
+                channel.bn.running_var[i].copy_(
+                    (old_var + channel.bn.eps) * s * s - channel.bn.eps
+                )
             channel.bn.weight[i].mul_(t)
             channel.bn.bias[i].mul_(t)
             channel.outgoing.weight[:, i].div_(t)

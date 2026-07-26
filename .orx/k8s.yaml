@@ -11,6 +11,9 @@ spec:
         - name: run
           image: pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime
           command: ["bash", "-c", "eval \"$ORX_SCRIPT\""]
+          volumeMounts:
+            - name: shared-memory
+              mountPath: /dev/shm
           resources:
             requests:
               nvidia.com/gpu: "4"
@@ -18,3 +21,8 @@ spec:
               memory: "128Gi"
             limits:
               nvidia.com/gpu: "4"
+      volumes:
+        - name: shared-memory
+          emptyDir:
+            medium: Memory
+            sizeLimit: 32Gi
