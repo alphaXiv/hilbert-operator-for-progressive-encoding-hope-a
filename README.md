@@ -13,6 +13,8 @@ The reproduction substitutes public torchvision ResNet-50/18 and ImageNetV2 for 
 
 [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/alphaXiv/hilbert-operator-for-progressive-encoding-hope-a/blob/main/notebooks/hope_reproduction.py)
 
+Molab URL: https://molab.marimo.io/github/alphaXiv/hilbert-operator-for-progressive-encoding-hope-a/blob/main/notebooks/hope_reproduction.py
+
 ## Experiment log
 
 The fixed command below is copied verbatim from `orx exp status`; each listed experiment ran on four Kubernetes GPUs.
@@ -32,7 +34,7 @@ The fixed command below is copied verbatim from `orx exp status`; each listed ex
 The committed default configuration evaluates dense ResNet-50 checkpoints. The formal OpenResearch invocation is:
 
 ```bash
-orx exp run <experiment-id> --backend k8s
+orx exp run --backend k8s <experiment-id>
 ```
 
 The immutable experiment command is:

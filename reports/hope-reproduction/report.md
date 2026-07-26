@@ -10,6 +10,8 @@ Modern neural networks contain many channels that appear removable, but ordinary
 
 [![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/alphaXiv/hilbert-operator-for-progressive-encoding-hope-a/blob/main/notebooks/hope_reproduction.py)
 
+Molab URL: https://molab.marimo.io/github/alphaXiv/hilbert-operator-for-progressive-encoding-hope-a/blob/main/notebooks/hope_reproduction.py
+
 ## From a neuron to a function-space score
 
 For a BatchNorm channel followed by ReLU, HOPE models its standardized input as Gaussian. If BatchNorm produces \(z=\beta+|\gamma|X\), the paper gives the closed-form squared norm
