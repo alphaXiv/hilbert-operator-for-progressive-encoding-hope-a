@@ -183,7 +183,7 @@ def method_worker(method: str, gpu_index: int, cfg: dict, data_root: str) -> dic
 def mechanism_checks(cfg: dict) -> dict:
     device = torch.device("cuda", 0)
     model, _ = model_and_weights(cfg["model"])
-    model.eval()
+    model.double().eval()
     before_channels = collect_channels(model)
     before_scores = score_channels(before_channels)
     scaled, factors = rescale_model(model, cfg["seed"] + 1000)
@@ -195,7 +195,12 @@ def mechanism_checks(cfg: dict) -> dict:
     model.to(device)
     scaled.to(device)
     generator = torch.Generator(device=device).manual_seed(cfg["seed"] + 2000)
-    probe = torch.randn((4, 3, 224, 224), generator=generator, device=device)
+    probe = torch.randn(
+        (4, 3, 224, 224),
+        generator=generator,
+        device=device,
+        dtype=next(model.parameters()).dtype,
+    )
     original_logits = model(probe)
     scaled_logits = scaled(probe)
     absolute = (original_logits - scaled_logits).abs()

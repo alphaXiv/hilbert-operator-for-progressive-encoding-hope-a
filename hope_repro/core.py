@@ -62,10 +62,10 @@ def score_channels(channels: Iterable[Channel]) -> dict[str, dict[str, float]]:
     with torch.no_grad():
         for channel in channels:
             i = channel.index
-            incoming = channel.conv.weight[i].detach().float()
-            outgoing = channel.outgoing.weight[:, i].detach().float()
-            gamma = channel.bn.weight[i].detach().float()
-            beta = channel.bn.bias[i].detach().float()
+            incoming = channel.conv.weight[i].detach().double()
+            outgoing = channel.outgoing.weight[:, i].detach().double()
+            gamma = channel.bn.weight[i].detach().double()
+            beta = channel.bn.bias[i].detach().double()
             kernel = relu_self_kernel(beta.reshape(()), gamma.reshape(()))
             capacity = outgoing.square().sum().sqrt() * kernel.sqrt()
             scores[channel.key] = {
@@ -230,14 +230,16 @@ def monte_carlo_kernel_check(
     generator = torch.Generator().manual_seed(seed)
     indices = torch.randperm(len(channels), generator=generator)[:channels_to_test].tolist()
     beta = torch.stack(
-        [channels[i].bn.bias[channels[i].index].detach().float().cpu() for i in indices]
+        [channels[i].bn.bias[channels[i].index].detach().double().cpu() for i in indices]
     ).to(device)
     gamma = torch.stack(
-        [channels[i].bn.weight[channels[i].index].detach().float().cpu() for i in indices]
+        [channels[i].bn.weight[channels[i].index].detach().double().cpu() for i in indices]
     ).to(device)
     analytic = relu_self_kernel(beta, gamma)
     gpu_generator = torch.Generator(device=device).manual_seed(seed + 1)
-    noise = torch.randn((samples, len(indices)), generator=gpu_generator, device=device)
+    noise = torch.randn(
+        (samples, len(indices)), generator=gpu_generator, device=device, dtype=beta.dtype
+    )
     empirical = torch.relu(beta.unsqueeze(0) + gamma.abs().unsqueeze(0) * noise).square().mean(0)
     relative = (empirical - analytic).abs() / analytic.clamp_min(1e-12)
     return {
