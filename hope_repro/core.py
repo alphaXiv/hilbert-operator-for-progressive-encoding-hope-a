@@ -229,8 +229,12 @@ def monte_carlo_kernel_check(
     channels = collect_channels(model)
     generator = torch.Generator().manual_seed(seed)
     indices = torch.randperm(len(channels), generator=generator)[:channels_to_test].tolist()
-    beta = torch.stack([channels[i].bn.bias.detach().float().cpu() for i in indices]).to(device)
-    gamma = torch.stack([channels[i].bn.weight.detach().float().cpu() for i in indices]).to(device)
+    beta = torch.stack(
+        [channels[i].bn.bias[channels[i].index].detach().float().cpu() for i in indices]
+    ).to(device)
+    gamma = torch.stack(
+        [channels[i].bn.weight[channels[i].index].detach().float().cpu() for i in indices]
+    ).to(device)
     analytic = relu_self_kernel(beta, gamma)
     gpu_generator = torch.Generator(device=device).manual_seed(seed + 1)
     noise = torch.randn((samples, len(indices)), generator=gpu_generator, device=device)
@@ -243,4 +247,3 @@ def monte_carlo_kernel_check(
         "max_relative_error": float(relative.max()),
         "mean_relative_error": float(relative.mean()),
     }
-
