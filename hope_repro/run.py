@@ -29,7 +29,7 @@ from .core import (
 
 DATA_URL = (
     "https://huggingface.co/datasets/vaishaal/ImageNetV2/resolve/main/"
-    "imagenetv2-matched-frequency.tar.gz"
+    "imagenetv2-matched-frequency.tar.gz?download=true"
 )
 METHODS = ("hope", "input_l1", "joint_l1", "bn_scale")
 
