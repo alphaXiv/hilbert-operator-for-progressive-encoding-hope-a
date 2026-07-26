@@ -87,7 +87,7 @@ def prepare_data() -> Path:
         print(f"DATA_DOWNLOAD {DATA_URL}", flush=True)
         urllib.request.urlretrieve(DATA_URL, archive)
     print(f"DATA_EXTRACT {archive}", flush=True)
-    with tarfile.open(archive, "r:gz") as handle:
+    with tarfile.open(archive, "r:*") as handle:
         handle.extractall(base, filter="data")
     if not root.exists():
         candidates = list(base.glob("imagenetv2-*format-val"))
