@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hope-repro-{{ORX_RUN}}
+spec:
+  activeDeadlineSeconds: 39600
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: run
+          image: pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime
+          command: ["bash", "-c", "eval \"$ORX_SCRIPT\""]
+          volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+          resources:
+            requests:
+              nvidia.com/gpu: "4"
+              cpu: "32"
+              memory: "128Gi"
+            limits:
+              nvidia.com/gpu: "4"
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 8Gi

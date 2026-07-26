@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="450" viewBox="0 0 760 450">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="55" y="38" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#111827">HOPE retains ResNet-50 accuracy at dense pruning levels</text>
+<text x="55" y="62" font-family="system-ui,sans-serif" font-size="13" fill="#4b5563">10,000 ImageNetV2 matched-frequency images; no fine-tuning or BN recalibration</text>
+<line x1="72" y1="340" x2="725" y2="340" stroke="#9ca3af"/>
+<line x1="72" y1="92" x2="72" y2="340" stroke="#9ca3af"/>
+<line x1="72" y1="340.0" x2="725" y2="340.0" stroke="#e5e7eb"/>
+<text x="62" y="344.0" text-anchor="end" font-family="system-ui" font-size="11" fill="#6b7280">0</text>
+<line x1="72" y1="304.6" x2="725" y2="304.6" stroke="#e5e7eb"/>
+<text x="62" y="308.6" text-anchor="end" font-family="system-ui" font-size="11" fill="#6b7280">10</text>
+<line x1="72" y1="269.1" x2="725" y2="269.1" stroke="#e5e7eb"/>
+<text x="62" y="273.1" text-anchor="end" font-family="system-ui" font-size="11" fill="#6b7280">20</text>
+<line x1="72" y1="233.7" x2="725" y2="233.7" stroke="#e5e7eb"/>
+<text x="62" y="237.7" text-anchor="end" font-family="system-ui" font-size="11" fill="#6b7280">30</text>
+<line x1="72" y1="198.3" x2="725" y2="198.3" stroke="#e5e7eb"/>
+<text x="62" y="202.3" text-anchor="end" font-family="system-ui" font-size="11" fill="#6b7280">40</text>
+<line x1="72" y1="162.9" x2="725" y2="162.9" stroke="#e5e7eb"/>
+<text x="62" y="166.9" text-anchor="end" font-family="system-ui" font-size="11" fill="#6b7280">50</text>
+<line x1="72" y1="127.4" x2="725" y2="127.4" stroke="#e5e7eb"/>
+<text x="62" y="131.4" text-anchor="end" font-family="system-ui" font-size="11" fill="#6b7280">60</text>
+<line x1="72" y1="92.0" x2="725" y2="92.0" stroke="#e5e7eb"/>
+<text x="62" y="96.0" text-anchor="end" font-family="system-ui" font-size="11" fill="#6b7280">70</text>
+<text x="72.0" y="362" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7280">100%</text>
+<text x="235.3" y="362" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7280">95%</text>
+<text x="398.5" y="362" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7280">90%</text>
+<text x="561.8" y="362" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7280">85%</text>
+<text x="725.0" y="362" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b7280">80%</text>
+<text x="18" y="216.0" transform="rotate(-90 18 216.0)" text-anchor="middle" font-family="system-ui" font-size="12" fill="#374151">ImageNetV2 top-1 accuracy (%)</text>
+<text x="398.5" y="426" text-anchor="middle" font-family="system-ui" font-size="12" fill="#374151">retained eligible channels</text>
+<polyline points="72.0,92.4 235.3,104.4 398.5,115.3 561.8,193.1 725.0,307.5" fill="none" stroke="#2563eb" stroke-width="3"/>
+<circle cx="72.0" cy="92.4" r="4" fill="#2563eb"/>
+<circle cx="235.3" cy="104.4" r="4" fill="#2563eb"/>
+<circle cx="398.5" cy="115.3" r="4" fill="#2563eb"/>
+<circle cx="561.8" cy="193.1" r="4" fill="#2563eb"/>
+<circle cx="725.0" cy="307.5" r="4" fill="#2563eb"/>
+<line x1="95" y1="390" x2="119" y2="390" stroke="#2563eb" stroke-width="3"/>
+<text x="126" y="394" font-family="system-ui" font-size="12" fill="#374151">HOPE</text>
+<polyline points="72.0,92.4 235.3,339.6 398.5,339.5 561.8,339.4 725.0,339.4" fill="none" stroke="#ef4444" stroke-width="3"/>
+<circle cx="72.0" cy="92.4" r="4" fill="#ef4444"/>
+<circle cx="235.3" cy="339.6" r="4" fill="#ef4444"/>
+<circle cx="398.5" cy="339.5" r="4" fill="#ef4444"/>
+<circle cx="561.8" cy="339.4" r="4" fill="#ef4444"/>
+<circle cx="725.0" cy="339.4" r="4" fill="#ef4444"/>
+<line x1="240" y1="390" x2="264" y2="390" stroke="#ef4444" stroke-width="3"/>
+<text x="271" y="394" font-family="system-ui" font-size="12" fill="#374151">input-L1</text>
+<polyline points="72.0,92.4 235.3,289.2 398.5,338.7 561.8,339.7 725.0,339.6" fill="none" stroke="#f59e0b" stroke-width="3"/>
+<circle cx="72.0" cy="92.4" r="4" fill="#f59e0b"/>
+<circle cx="235.3" cy="289.2" r="4" fill="#f59e0b"/>
+<circle cx="398.5" cy="338.7" r="4" fill="#f59e0b"/>
+<circle cx="561.8" cy="339.7" r="4" fill="#f59e0b"/>
+<circle cx="725.0" cy="339.6" r="4" fill="#f59e0b"/>
+<line x1="385" y1="390" x2="409" y2="390" stroke="#f59e0b" stroke-width="3"/>
+<text x="416" y="394" font-family="system-ui" font-size="12" fill="#374151">joint-L1</text>
+<polyline points="72.0,92.4 235.3,333.5 398.5,337.2 561.8,339.2 725.0,339.4" fill="none" stroke="#10b981" stroke-width="3"/>
+<circle cx="72.0" cy="92.4" r="4" fill="#10b981"/>
+<circle cx="235.3" cy="333.5" r="4" fill="#10b981"/>
+<circle cx="398.5" cy="337.2" r="4" fill="#10b981"/>
+<circle cx="561.8" cy="339.2" r="4" fill="#10b981"/>
+<circle cx="725.0" cy="339.4" r="4" fill="#10b981"/>
+<line x1="530" y1="390" x2="554" y2="390" stroke="#10b981" stroke-width="3"/>
+<text x="561" y="394" font-family="system-ui" font-size="12" fill="#374151">BN-scale</text>
+</svg>

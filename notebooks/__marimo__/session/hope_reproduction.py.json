@@ -1,0 +1,126 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.15",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "376a518925608707878f5797485e819a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"reproducing-hopes-rescaling-and-pruning-claims\">Reproducing HOPE's rescaling and pruning claims</h1>\n<span class=\"paragraph\"><strong>Verdict: partially reproduced.</strong> Fresh Kubernetes experiments support both selected\nclaims on public pretrained torchvision ResNet-50 and ResNet-18 models evaluated on all\n10,000 ImageNetV2 matched-frequency images. The protocol substitutes ImageNetV2 for the\ngated original ImageNet validation set and does not measure physical speedup.</span>\n<span class=\"paragraph\">This notebook embeds the measured evidence, so opening it does not rerun the expensive\nexperiment. The optional calculator below only evaluates the paper's closed-form kernel.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "37bcdb230ac38058c4907f99ea62e34e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "9ec4401c6ff1b372d6773646372fc7a0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"headline-result\">Headline result</h2>\n<span class=\"paragraph\">Top-1 accuracy on the full public benchmark, without tuning or recalibration:</span></span><marimo-ui-element object-id='bkHC-0' random-id='8d202b7e-3558-92a8-509f-b5a124726f78'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;density&#92;&quot;:&#92;&quot;100%&#92;&quot;,&#92;&quot;HOPE&#92;&quot;:69.9,&#92;&quot;input-L1&#92;&quot;:69.9,&#92;&quot;joint-L1&#92;&quot;:69.9,&#92;&quot;BN-scale&#92;&quot;:69.9},{&#92;&quot;density&#92;&quot;:&#92;&quot;95%&#92;&quot;,&#92;&quot;HOPE&#92;&quot;:66.51,&#92;&quot;input-L1&#92;&quot;:0.11,&#92;&quot;joint-L1&#92;&quot;:14.33,&#92;&quot;BN-scale&#92;&quot;:1.83},{&#92;&quot;density&#92;&quot;:&#92;&quot;90%&#92;&quot;,&#92;&quot;HOPE&#92;&quot;:63.42,&#92;&quot;input-L1&#92;&quot;:0.14,&#92;&quot;joint-L1&#92;&quot;:0.36,&#92;&quot;BN-scale&#92;&quot;:0.78},{&#92;&quot;density&#92;&quot;:&#92;&quot;85%&#92;&quot;,&#92;&quot;HOPE&#92;&quot;:41.47,&#92;&quot;input-L1&#92;&quot;:0.16,&#92;&quot;joint-L1&#92;&quot;:0.09,&#92;&quot;BN-scale&#92;&quot;:0.22},{&#92;&quot;density&#92;&quot;:&#92;&quot;80%&#92;&quot;,&#92;&quot;HOPE&#92;&quot;:9.16,&#92;&quot;input-L1&#92;&quot;:0.18,&#92;&quot;joint-L1&#92;&quot;:0.12,&#92;&quot;BN-scale&#92;&quot;:0.18}]&quot;' data-total-rows='5' data-total-columns='5' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='10' data-show-filters='false' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>How to read this:</strong> at 90% density, HOPE retained <strong>63.42%</strong> top-1 from a 69.90% baseline; the best comparator retained <strong>0.78%</strong>. At 80%, even HOPE fell to 9.16%, so this evidence supports ordering quality\u2014not robust extreme pruning.</span></span></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "873ec04cb555c8dd6bf9016dcd7e1c33",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"what-hope-scores\">What HOPE scores</h2>\n<span class=\"paragraph\">For a BatchNorm output modeled as <marimo-tex class=\"arithmatex\">||(z=\\beta+|\\gamma|X||)</marimo-tex>, <marimo-tex class=\"arithmatex\">||(X\\sim\\mathcal N(0,1)||)</marimo-tex>,\nthe squared Hilbert norm after ReLU is</span>\n<marimo-tex class=\"arithmatex\">||[\nK=(\\gamma^2+\\beta^2)\\Phi(\\beta/|\\gamma|)\n  +\\beta|\\gamma|\\phi(\\beta/|\\gamma|).\n||]</marimo-tex><span class=\"paragraph\">Multiplying <marimo-tex class=\"arithmatex\">||(\\sqrt K||)</marimo-tex> by the outgoing weight norm gives neuron capacity. The\ndistortion-rate score divides the paper's pruning penalty by the channel's static\nfootprint. We implemented that score, input-weight L1, joint input/output L1, and\nBatchNorm-scale baselines over internal residual-block channels.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "ceae326cfeb67ff462ef729984751325",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: row;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='PKri-0' random-id='93623edf-d4c7-ecc9-7a33-2b638363fd5b'><marimo-slider data-initial-value='0.0' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003e\u03b2&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='-3.0' data-stop='3.0' data-step='0.1' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element><marimo-ui-element object-id='PKri-1' random-id='4ebe744e-9f1f-b843-e931-b3cc7f084ce5'><marimo-slider data-initial-value='1.0' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003e|\u03b3|&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0.1' data-stop='3.0' data-step='0.1' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "10e55ba0b42f52e1d7f412889fa0c1a7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Closed-form kernel: <strong>0.500000</strong>; Hilbert norm: <strong>0.707107</strong></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "d2e950e0f211b9248a5eea0f1d079308",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"function-preserving-rescaling\">Function-preserving rescaling</h2></span><marimo-ui-element object-id='SFPL-0' random-id='ab25bd28-99a1-5e4a-4d66-7986c5f29a50'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;score&#92;&quot;:&#92;&quot;HOPE&#92;&quot;,&#92;&quot;bottom-25% overlap&#92;&quot;:1.0,&#92;&quot;Spearman&#92;&quot;:1.0},{&#92;&quot;score&#92;&quot;:&#92;&quot;input-L1&#92;&quot;,&#92;&quot;bottom-25% overlap&#92;&quot;:0.542,&#92;&quot;Spearman&#92;&quot;:0.894},{&#92;&quot;score&#92;&quot;:&#92;&quot;joint-L1&#92;&quot;,&#92;&quot;bottom-25% overlap&#92;&quot;:0.523,&#92;&quot;Spearman&#92;&quot;:0.828},{&#92;&quot;score&#92;&quot;:&#92;&quot;BN-scale&#92;&quot;,&#92;&quot;bottom-25% overlap&#92;&quot;:0.345,&#92;&quot;Spearman&#92;&quot;:0.563}]&quot;' data-total-rows='4' data-total-columns='3' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='10' data-show-filters='false' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">In the float64 ResNet-50 control, rescaling changed logits by at most <strong>5.65\u00d710\u207b\u00b9\u2076 relative</strong>. HOPE's complete order was identical and its maximum score change was 1.90\u00d710\u207b\u00b9\u2074; all magnitude-based pruning sets changed materially.</span></span></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "5260dd79508401d8e5297b97dadaaa0d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"numerical-and-scope-checks\">Numerical and scope checks</h2>\n<span class=\"paragraph\">Across five fresh model/seed conditions, the analytic kernel's median relative error\nagainst 100,000-sample Monte Carlo estimates was <strong>0.61\u20130.84%</strong> (64 channels each).\nThe experiment used post-BatchNorm masks equivalent to deleting selected internal\nchannels and downstream input slices. It used no fine-tuning, recalibration, merging,\nblock eviction, or DEFT.</span>\n<span class=\"paragraph\">Compute: Kubernetes, peak 16 concurrent <strong>NVIDIA RTX PRO 6000 Blackwell</strong> GPUs,\n0.42 hours measured experiment wall span. See the linked report and source repository\nfor branch-level provenance and the exact fixed run command.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}
